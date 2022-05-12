@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import chalk from "chalk";
 
 import { postCadastroUsuario, postLoginUsuario } from './controllers/authController.js';
-import { getProductsTelaInicial } from './controllers/productController.js';
+import { getProductsTelaInicial, getProductsByIdProduct } from './controllers/productController.js';
 
 dotenv.config();
 const app = express();
@@ -15,6 +15,7 @@ app.use(json());
 app.post('/sign-up', postCadastroUsuario);
 app.post('/sign-in', postLoginUsuario);
 app.get('/products', getProductsTelaInicial);
+app.get('/products/:id', getProductsByIdProduct);
 
 const port = process.env.PORT || 5000;
 app.listen(port, ()=>{

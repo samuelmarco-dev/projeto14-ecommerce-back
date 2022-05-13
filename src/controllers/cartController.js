@@ -5,7 +5,16 @@ import db from './../mongoDB.js';
 import { v4 as uuid } from 'uuid';
 
 export async function getCart(req, res) {
-
+    const {id}=req.params;
+    try{
+        const cart = await db.collection('productsCart').find({id}).toArray();
+        if(cart){
+            return res.status(200).send(cart);
+        }
+    }catch(error){
+        console.log(chalk.red('Catch conexão banco de dados'), error);
+        res.sendStatus(500);
+    }
 }
 export async function createCart(req, res) {
     const cartId = uuid();
@@ -25,14 +34,32 @@ export async function createCart(req, res) {
 
 export async function removeCart(req, res) {}
 
-export async function updateCart(req, res) {}
+export async function addCart(req, res) {
+    const {id}=req.params;
+    const {product}=req.body;
+    try{
+        const cart = await db.collection('carts').findOne({id});
+        if(!cart){
+            return res.status(404).send('Carrinho não encontrado');
+        }
+        // const data = await db.collection('carts').find({product})
+        // if(data){
+        //     return res.status(404).send('Produto já adicionado');
+        // }
+        const productCart = await db.collection('productsCart').insertOne({id, product});
+        res.sendStatus(201);
+    }catch (error) {
+        console.log(chalk.red('Catch conexão banco de dados'), error);
+    }
+}
+
 
 export async function clearCart(req, res) {}
 
 export async function getCartTotal(req, res) {
     const {id}=req.params;
     try {
-    const cart=await db.collection('carts').findOne({ _id: new ObjectId(id)});
+    const cart=await db.collection('carts').findOne({id});
     const total=cart.products.reduce((all,curr)=>{
         return all+curr.price;
     },0);
@@ -44,9 +71,8 @@ export async function getCartTotal(req, res) {
 export async function getCartAmount(req, res) {
     const {id}=req.params;
     try {
-        const cart=await db.collection('carts').find({id}).toArray();
-        const products = cart[0].products;
-        let amount = products.length;
+        const cart=await db.collection('productsCart').find({id}).toArray();
+        let amount = cart.length;
         res.send(amount.toString()).status(200);
         
     } catch (error) {

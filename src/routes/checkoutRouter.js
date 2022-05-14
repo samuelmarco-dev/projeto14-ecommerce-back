@@ -4,6 +4,6 @@ import { validateDadosPagamento, validateTokenUser } from '../middlewares/checko
 
 const checkoutRouter = Router();
 
-checkoutRouter.post('/checkout', validateDadosPagamento, validateTokenUser, checkoutPurchaseUser);
+checkoutRouter.post('/checkout', validateTokenUser, validateDadosPagamento, checkoutPurchaseUser);
 
 export default checkoutRouter;

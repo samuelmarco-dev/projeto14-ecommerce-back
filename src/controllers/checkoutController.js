@@ -1,11 +1,12 @@
 import db from "../mongoDB.js";
 
 export async function checkoutPurchaseUser(req, res){
+    console.log('checkoutPurchaseUser request');
     const { street, city, state, cpf, country, cep, phone, products, total } = req.body;
 
     try {
-        const user = res.locals;
-        console.log(user);
+        const { user, token } = res.locals;
+        console.log(user, token);
 
         await db.collection('sale').insertOne({
             userId: user._id,
@@ -21,6 +22,6 @@ export async function checkoutPurchaseUser(req, res){
         return res.sendStatus(200);
     } catch (error) {
         console.log('Error in checkoutPurchaseUser: ', error);
-        res.senStatus(500);
+        res.sendStatus(500);
     }
 }

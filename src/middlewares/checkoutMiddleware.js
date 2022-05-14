@@ -20,16 +20,19 @@ function validateDadosPagamento(req, res, next){
 async function validateTokenUser(req, res, next){
     const { authorization } = req.headers;
     const token = authorization?.replace("Bearer ", "").trim();
+    console.log(token);
     if(!token) return res.sendStatus(401);
 
     try {
-        const sessionUser = await db.collection('session').findOne({ token });
+        const sessionUser = await db.collection('sessions').findOne({ token });
+        console.log('session', sessionUser);
         if(!sessionUser) return res.sendStatus(401); 
 
         const user = await db.collection('users').findOne({ _id: sessionUser.userId });
+        console.log('user', user);
         if(!user) return res.sendStatus(404);
 
-        res.locals = user;
+        res.locals = { user, token };
         next();
     } catch (error) {
         console.log('Error in validateTokenUser: ', error);

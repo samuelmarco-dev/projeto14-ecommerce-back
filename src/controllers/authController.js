@@ -8,7 +8,7 @@ async function postCadastroUsuario(req, res) {
     console.log(name, email, password, confirmPassword);
 
     try {
-        const { user } = res.locals;
+        const user = res.locals;
         console.log(user);
 
         if(user) {
@@ -33,7 +33,7 @@ async function postLoginUsuario(req, res) {
     console.log(email, password);
 
     try {
-        const { user } = res.locals;
+        const user = res.locals;
         console.log(user);
 
         if(user && bcrypt.compareSync(password, user.password)){

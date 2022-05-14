@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { postCadastroUsuario, postLoginUsuario } from "../controllers/authController.js";
 import { validateCadastro, validateLogin } from "../middlewares/authSignMiddleware.js";
-import { usuarioCadastrado } from "../middlewares/userCadastrado.js";
+import { usuarioCadastrado } from "../middlewares/userCadastradoMiddleware.js";
 
 const authRouter = Router();
 

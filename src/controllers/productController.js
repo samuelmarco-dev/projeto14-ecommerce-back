@@ -8,7 +8,7 @@ async function getProductsTelaInicial(req, res) {
         const filtroTitle = filtro.charAt(0).toUpperCase() + filtro.slice(1);
         console.log(filtro, filtroTitle);
         
-        const { produtos } = res.locals;
+        const produtos  = res.locals;
         const produtosFiltrados = produtos.filter(produto => {
             return produto.name.includes(filtroTitle) || produto.description.includes(filtroTitle) || 
             produto.category.includes(filtroTitle) || produto.price.includes(filtroTitle) ||
@@ -18,7 +18,7 @@ async function getProductsTelaInicial(req, res) {
         return res.status(200).send(produtosFiltrados);
     }else{
         try {
-            const { produtos } = res.locals;
+            const produtos = res.locals;
             return res.status(200).send(produtos);
         } catch (error) {
             console.log('Catch conexão banco de dados', error);

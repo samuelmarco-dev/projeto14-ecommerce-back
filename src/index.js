@@ -6,6 +6,7 @@ import chalk from "chalk";
 
 import authRouter from './routes/authRouter.js';
 import productRouter from "./routes/productRouter.js";
+import checkoutRouter from "./routes/checkoutRouter.js";
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,7 @@ app.use(json());
 
 app.use(authRouter);
 app.use(productRouter);
+app.use(checkoutRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, ()=>{

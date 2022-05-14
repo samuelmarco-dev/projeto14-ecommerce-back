@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { checkoutPurchaseUser } from '../controllers/checkoutController.js';
-import { validateDadosPagamento } from '../middlewares/checkoutMiddleware.js';
+import { validateDadosPagamento, validateTokenUser } from '../middlewares/checkoutMiddleware.js';
 
 const checkoutRouter = Router();
 
-checkoutRouter.post('/checkout', validateDadosPagamento, checkoutPurchaseUser);
+checkoutRouter.post('/checkout', validateDadosPagamento, validateTokenUser, checkoutPurchaseUser);
 
 export default checkoutRouter;

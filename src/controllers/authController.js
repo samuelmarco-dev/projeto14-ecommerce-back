@@ -1,4 +1,3 @@
-import joi from 'joi';
 import bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
 
@@ -8,27 +7,11 @@ async function postCadastroUsuario(req, res) {
     const { name, email, password, confirmPassword } = req.body;
     console.log(name, email, password, confirmPassword);
 
-    const regexName = /^[a-zA-ZáéíóúàâêôãõüçÁÉÍÓÚÀÂÊÔÃÕÜÇ ]+$/;
-    const regexSenha = /^[0-9]{4,8}[a-zA-zçÇ]{3,12}$/;
-
-    const schemaCadastro = joi.object({
-        name: joi.string().pattern(regexName).required(),
-        email: joi.string().email().required(),
-        password: joi.string().pattern(regexSenha).required(),
-        confirmPassword: joi.ref('password')
-    });
-    const validacao = schemaCadastro.validate({ name, email, password, confirmPassword }, { abortEarly: false });
-    console.log(validacao);
-    
-    const { error } = validacao;
-    if (error) {
-        console.log('Erro na validação');
-        return res.status(422).send(error.details.map(detail => detail.message));
-    }
-
     try {
-        const userJaCadastrado = await db.collection('users').findOne({ email });
-        if(userJaCadastrado) {
+        const { user } = res.locals;
+        console.log(user);
+
+        if(user) {
             console.log('Usuário já cadastrado');
             return res.sendStatus(409);
         }
@@ -49,25 +32,13 @@ async function postLoginUsuario(req, res) {
     const { email, password } = req.body;
     console.log(email, password);
 
-    const regexSenha = /^[0-9]{4,8}[a-zA-zçÇ]{3,12}$/;
-    const schemaLogin = joi.object({
-        email: joi.string().email().required(),
-        password: joi.string().pattern(regexSenha).required()
-    });
-    const validacao = schemaLogin.validate({ email, password }, { abortEarly: false });
-    console.log(validacao);
-    const { error } = validacao;
-
-    if(error){
-        console.log('Erro na validação');
-        return res.status(422).send(error.details.map(detail => detail.message));
-    }
-
     try {
-        const usuarioCadastrado = await db.collection('users').findOne({ email });
-        if(usuarioCadastrado && bcrypt.compareSync(password, usuarioCadastrado.password)){
+        const { user } = res.locals;
+        console.log(user);
+
+        if(user && bcrypt.compareSync(password, user.password)){
             const token = uuid();
-            await db.collection('sessions').insertOne({ token, userId: usuarioCadastrado._id });
+            await db.collection('sessions').insertOne({ token, userId: user._id });
             return res.status(200).send(token);
         }
         return res.sendStatus(401);

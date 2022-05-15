@@ -6,6 +6,7 @@ import { v4 as uuid } from 'uuid';
 
 export async function getCart(req, res) {
     const {id}=req.params;
+    console.log(id)
     try{
         const cart = await db.collection('productsCart').find({id}).toArray();
         if(cart){
@@ -20,7 +21,8 @@ export async function createCart(req, res) {
     const cartId = uuid();
     const cart = {
         products: [],
-        id : cartId
+        id : cartId,
+        status: "open"
     };
     try{
     const data = await db.collection('carts').insertOne(cart);   
@@ -32,7 +34,33 @@ export async function createCart(req, res) {
     }
 }
 
-export async function removeCart(req, res) {}
+export async function finishedCart(req, res) {
+    const {id}=req.params;
+    try{
+        const cart = await db.collection('productsCart').updateOne({id}, {$set: {status: "finished"}});
+        if(cart){
+            return res.status(200).send(cart);
+        }
+    }catch(error){
+        console.log(chalk.red('Catch conexão banco de dados'), error);
+        res.sendStatus(500);
+    }
+}
+
+export async function CheckoutCart(req, res) {
+    const {id}=req.params;
+    try{
+        const cart = await db.collection('productsCart').findOne({$and:[{id}, {status: "finished"}]});
+        if(!cart){
+            return res.status(404).send('Carrinho não encontrado');
+        }
+        const products=await db.collection('productsCart').find({id}).toArray();
+        return res.status(200).send(products);
+    }catch(error){
+        console.log(chalk.red('Catch conexão banco de dados'), error);
+        res.sendStatus(500);
+    }
+}
 
 export async function addCart(req, res) {
     const {id}=req.params;
@@ -90,7 +118,7 @@ export async function updateCart(req, res) {
         if(!productsCart){
             return res.status(404).send('Produto não encontrado');
         }
-        await db.collection('productsCart').updateOne({_id: new ObjectId(idProduct)}, {$set:{quantidade:amountItem} });
+        await db.collection('productsCart').updateOne({_id: new ObjectId(idProduct)}, {$set:{amount:amountItem} });
         console.log(chalk.green.bold("Quantidade alterada", idProduct, amountItem));
         
 

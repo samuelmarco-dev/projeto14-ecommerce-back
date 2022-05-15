@@ -2,7 +2,7 @@ import db from "../mongoDB.js";
 
 export async function checkoutPurchaseUser(req, res){
     console.log('checkoutPurchaseUser request');
-    const { street, city, state, cpf, country, cep, phone, products, total } = req.body;
+    const { street, city, state, cpf, country, cep, phone, products, total, typePayment } = req.body;
 
     try {
         const { user, token } = res.locals;
@@ -17,7 +17,8 @@ export async function checkoutPurchaseUser(req, res){
                 name: product.name, value: product.value, tokenCart: product.id,
                 quantidade: product.quantidade, idProduct: product._id
             })),
-            total
+            total, 
+            typePayment
         });
         return res.sendStatus(200);
     } catch (error) {

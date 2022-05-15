@@ -13,7 +13,8 @@ const schemaDadosPagamento = joi.object({
     cep: joi.string().pattern(regexCEP).required(),
     phone: joi.string().pattern(regexPhone).required(),
     products: joi.array().required(),
-    total: joi.number().required()
+    total: joi.number().required(),
+    typePayment: joi.string().valid('CARTÃO', 'DINHEIRO', 'CARTAO', 'BOLETO').required()
 });
 
 export default schemaDadosPagamento;

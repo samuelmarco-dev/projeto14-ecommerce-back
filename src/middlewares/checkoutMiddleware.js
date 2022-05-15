@@ -2,10 +2,13 @@ import schemaDadosPagamento from "../schemas/checkoutSchema.js";
 import db from "../mongoDB.js";
 
 function validateDadosPagamento(req, res, next){
-    const { street, city, state, cpf, country, cep, phone, products, total } = req.body;
+    const { street, city, state, cpf, country, cep, phone, products, total, typePayment } = req.body;
+    const upperTypePayment = typePayment.toString().toUpperCase();
+    console.log('upperCase', upperTypePayment);
 
     const validacao = schemaDadosPagamento.validate(
-        { street, city, state, cpf, country, cep, phone, products, total }, {abortEarly: false}
+        { street, city, state, cpf, country, cep, phone, products, total, typePayment: upperTypePayment }, 
+        {abortEarly: false}
     );
     console.log(validacao);
 

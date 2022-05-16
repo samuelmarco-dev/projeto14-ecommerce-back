@@ -19,7 +19,7 @@ app.use(authRouter);
 app.use(productRouter);
 app.use(checkoutRouter);
 
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 app.listen(port, ()=>{
     console.log(chalk.green(`Server is running on port ${port}`));
 });

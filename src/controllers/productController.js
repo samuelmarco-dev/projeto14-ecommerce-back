@@ -47,4 +47,4 @@ export async function addProduct(req, res) {
         res.sendStatus(500);
     }
 }
-export { getProductsTelaInicial, getProductsByIdProduct };
+export { getProductsTelaInicial, getProductsByIdProduct};

@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { getProductsTelaInicial, getProductsByIdProduct, addProduct } from "../controllers/productController.js";
+import { getProductsTelaInicial, getProductsByIdProduct} from "../controllers/productController.js";
 import { produtosCadastrados } from "../middlewares/productArrayMiddleware.js";
 import { addProduct } from "../controllers/productController.js";
 

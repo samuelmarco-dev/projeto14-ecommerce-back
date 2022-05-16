@@ -7,5 +7,5 @@ const productRouter = Router();
 
 productRouter.get('/products', produtosCadastrados, getProductsTelaInicial);
 productRouter.get('/products/:id', getProductsByIdProduct);
-
+productRouter.post('/products/add', addProduct);
 export default productRouter;

@@ -37,5 +37,14 @@ async function getProductsByIdProduct(req, res) {
         res.sendStatus(500);
     }
 }
-
+export async function addProduct(req, res) {
+    const { name, description, category, price, image } = req.body;
+    try {
+        const produto = await db.collection('products').insertOne({ name, description, category, price, image });
+        return res.status(200).send(produto);
+    } catch (error) {
+        console.log('Catch conexão banco de dados', error);
+        res.sendStatus(500);
+    }
+}
 export { getProductsTelaInicial, getProductsByIdProduct };

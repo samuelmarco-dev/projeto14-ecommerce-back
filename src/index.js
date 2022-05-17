@@ -2,8 +2,6 @@ import express, { json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import chalk from "chalk";
-
 import authRouter from './routes/authRouter.js';
 import productRouter from "./routes/productRouter.js";
 import checkoutRouter from "./routes/checkoutRouter.js";
@@ -21,5 +19,5 @@ app.use(checkoutRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, ()=>{
-    console.log(chalk.green(`Server is running on port ${port}`));
+    console.log((`Server is running on port ${port}`));
 });

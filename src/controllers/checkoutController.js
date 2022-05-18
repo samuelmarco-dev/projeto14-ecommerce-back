@@ -14,8 +14,8 @@ export async function checkoutPurchaseUser(req, res){
             infoUser: { name: user.name, email: user.email, cpf, phone },
             adress: { street, city, state, country, cep },
             products: products.map(product => ({
-                name: product.name, value: product.value, tokenCart: product.id,
-                quantidade: product.quantidade, idProduct: product._id
+                name: product.name, price: product.price, tokenCart: product.id,
+                amount: product.amount, idProduct: product._id
             })),
             total, 
             typePayment
